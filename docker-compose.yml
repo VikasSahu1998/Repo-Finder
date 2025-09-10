@@ -1,0 +1,6 @@
+services:
+  repo-finder:
+    build: .
+    container_name: repo-finder
+    stdin_open: true
+    tty: true
