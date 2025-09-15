@@ -2,12 +2,13 @@ import os
 from flask import Flask, render_template, request
 from .core import RepositoryFinder
 from .categories import CATEGORIES
+# Initialize Flask app
+app = Flask(__name__)
 
-# Point to the templates folder inside repo_finder
-template_dir = os.path.join(os.path.dirname(__file__), "templates")
-app = Flask(__name__, template_folder=template_dir)
-
+# Initialize repo finder
 finder = RepositoryFinder()
+
+
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -17,7 +18,7 @@ def index():
     if request.method == "POST":
         selected_category = request.form.get("category")
         limit = int(request.form.get("limit", 10))
-        keywords = CATEGORIES.get(selected_category, [])
+        keywords = CATEGORIES.get(selected_category, [])[:5] 
         query = " OR ".join(keywords)
         results = finder.search_github(query, limit=limit)
 

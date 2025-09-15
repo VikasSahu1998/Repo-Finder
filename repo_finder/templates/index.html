@@ -1,21 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Repo Finder</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            display: inline-block;
+        }
     </style>
 </head>
+
 <body>
     <h1>Repo Finder</h1>
     <form method="post">
         <label for="category">Select Category:</label>
         <select name="category" id="category">
             {% for cat in categories %}
-                <option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>{{ cat }}</option>
+            <option value="{{ cat }}" {% if selected_category==cat %}selected{% endif %}>{{ cat }}</option>
             {% endfor %}
         </select>
         <label for="limit">Limit:</label>
@@ -26,16 +48,32 @@
     {% if results %}
     <h2>Results for {{ selected_category }}</h2>
     <table>
-        <tr><th>⭐ Stars</th><th>Repo</th><th>Language</th><th>URL</th></tr>
+        <tr>
+            <th>⭐ Stars</th>
+            <th>Repository</th>
+            <th>Language</th>
+            <th>URL</th>
+            <th>API Endpoints / Keys</th>
+        </tr>
         {% for repo in results %}
         <tr>
             <td>{{ repo.stars }}</td>
             <td>{{ repo.full_name }}</td>
             <td>{{ repo.language }}</td>
-            <td><a href="{{ repo.url }}" target="_blank">{{ repo.url }}</a></td>
+            <td><a href="{{ repo.url }}" target="_blank">Link</a></td>
+            <td>
+                {% if repo.api_endpoints %}
+                    {% for key in repo.api_endpoints %}
+                        <code>{{ key }}</code><br>
+                    {% endfor %}
+                {% else %}
+                    None
+                {% endif %}
+            </td>
         </tr>
         {% endfor %}
     </table>
     {% endif %}
 </body>
+
 </html>
